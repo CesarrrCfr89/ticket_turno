@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Modificar Turno</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h2>Modificar Turno</h2>
+
+  <!-- Formulario para ingresar CURP y turno -->
+  <form action="/modificar_turno" method="POST">
+    <input type="hidden" name="accion" value="buscar">
+    <input type="text" name="curp" placeholder="CURP" required><br>
+    <input type="number" name="turno" placeholder="Número de turno" required><br>
+    <button type="submit">Buscar Turno</button>
+  </form>
+  
+
+  <!-- Mostrar los datos del turno si se encuentra -->
+  {% if turno_encontrado %}
+  <form action="/modificar_turno" method="POST">
+    <input type="hidden" name="accion" value="actualizar">
+    <input type="text" name="curp" value="{{ turno_encontrado['curp'] }}" readonly><br>
+    <input type="hidden" name="turno" value="{{ turno_encontrado['turno'] }}">
+    <input type="text" name="nombre" value="{{ turno_encontrado['nombre'] }}" required><br>
+    <input type="text" name="apellido_paterno" value="{{ turno_encontrado['apellido_paterno'] }}" required><br>
+    <input type="text" name="apellido_materno" value="{{ turno_encontrado['apellido_materno'] }}"><br>
+    <input type="text" name="telefono" value="{{ turno_encontrado['telefono'] }}"><br>
+    <input type="text" name="celular" value="{{ turno_encontrado['celular'] }}"><br>
+    <input type="email" name="correo" value="{{ turno_encontrado['correo'] }}"><br>
+
+    <select name="nivel" required>
+      <option value="Básico" {% if turno_encontrado['nivel'] == 'Básico' %} selected {% endif %}>Básico</option>
+      <option value="Medio superior" {% if turno_encontrado['nivel'] == 'Medio superior' %} selected {% endif %}>Medio superior</option>
+      <option value="Superior" {% if turno_encontrado['nivel'] == 'Superior' %} selected {% endif %}>Superior</option>
+    </select><br>
+
+    <input type="text" name="municipio" value="{{ turno_encontrado['municipio'] }}" required><br>
+    <textarea name="asunto">{{ turno_encontrado['asunto'] }}</textarea><br>
+    <button type="submit">Actualizar Turno</button>
+  </form>
+{% endif %}
+
+
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Solicitud de Turno</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h2>Formulario de Solicitud de Turno</h2>
+
+  <form action="/registrar_turno" method="POST">
+    <input type="text" name="curp" placeholder="CURP" required><br>
+    <input type="text" name="nombre" placeholder="Nombre" required><br>
+    <input type="text" name="apellido_paterno" placeholder="Apellido paterno" required><br>
+    <input type="text" name="apellido_materno" placeholder="Apellido materno"><br>
+    <input type="text" name="telefono" placeholder="Teléfono"><br>
+    <input type="text" name="celular" placeholder="Celular"><br>
+    <input type="email" name="correo" placeholder="Correo electrónico"><br>
+    <select name="nivel" required>
+      <option value="">Nivel educativo</option>
+      <option value="Básico">Básico</option>
+      <option value="Medio superior">Medio superior</option>
+      <option value="Superior">Superior</option>
+    </select><br>
+    
+    <!-- Lista de municipios -->
+    <select name="municipio" required>
+      <option value="">Selecciona el municipio</option>
+      {% for municipio in municipios %}
+        <option value="{{ municipio }}">{{ municipio }}</option>
+      {% endfor %}
+    </select><br>
+    
+    <textarea name="asunto" placeholder="Asunto a tratar"></textarea><br>
+    <button type="submit">Solicitar Turno</button>
+  </form>
+
+  <!-- Botón para redirigir a la página de modificación de turno -->
+  <form action="{{ url_for('turno.modificar_turno_route') }}" method="GET">
+    <button type="submit">Modificar Turno</button>
+  </form>
+
+  <!-- Botón para cerrar sesión -->
+  <a href="{{ url_for('login.logout') }}">
+    <button type="button">Cerrar sesión</button>
+  </a>
+
+  <!-- Botón de consulta -->
+  <a href="{{ url_for('turno.consultar_turno_route') }}">
+    <button type="button">Consultar Turno</button>
+  </a>
+
+</body>
+</html>

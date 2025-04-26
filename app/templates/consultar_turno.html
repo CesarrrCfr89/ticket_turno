@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Consultar Turno</title>
+</head>
+<body>
+    <h1>Consultar Turno</h1>
+
+    <form method="POST">
+        <input type="text" name="query" placeholder="Introduce CURP o nombre">
+        <button type="submit">Buscar</button>
+    </form>
+
+    {% if registros %}
+        <h2>Resultados:</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>CURP</th>
+                    <th>Nombre</th>
+                    <th>Turno</th>
+                    <th>Municipio</th>
+                    <th>Estatus</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for r in registros %}
+                <tr>
+                    <td>{{ r[1] }}</td>
+                    <td>{{ r[2] }} {{ r[3] }} {{ r[4] }}</td>
+                    <td>{{ r[11] }}</td>
+                    <td>{{ r[9] }}</td>
+                    <td>{{ r[12] }}</td>
+                    <td>
+                        <!-- Modificar -->
+                        <a href="{{ url_for('turno.modificar_turno', turno_id=r[0]) }}">Modificar</a> |
+                        <!-- Eliminar -->
+                        <form action="{{ url_for('turno.eliminar_turno', turno_id=r[0]) }}" method="POST" style="display:inline;">
+                            <button type="submit" onclick="return confirm('¿Seguro que deseas eliminar este turno?');">Eliminar</button>
+                        </form> |
+                        <!-- Cambiar estatus -->
+                        {% if r[12] != 'Resuelto' %}
+                            <a href="{{ url_for('turno.cambiar_estatus', turno_id=r[0], estatus='Resuelto') }}">Marcar como Resuelto</a>
+                        {% else %}
+                            <a href="{{ url_for('turno.cambiar_estatus', turno_id=r[0], estatus='Pendiente') }}">Marcar como Pendiente</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No se encontraron resultados.</p>
+    {% endif %}
+</body>
+</html>
+
+
